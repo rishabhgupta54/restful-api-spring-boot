@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateCategoryException.class)
+    public ResponseEntity<ApiResponse<Object>> handleDuplicateCategoryException(DuplicateCategoryException exception) {
+        ApiResponse<Object> response = ApiResponse.error(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<ApiResponse<Object>> handleDuplicateEmailException(DuplicateEmailException exception) {
         ApiResponse<Object> response = ApiResponse.error(exception.getMessage());
@@ -58,25 +64,5 @@ public class GlobalExceptionHandler {
 
         ApiResponse<Object> response = ApiResponse.validationError(errorMap);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<Object>> handleDataIntegrityViolation(DataIntegrityViolationException exception) {
-        String message = "Database error occurred";
-
-        // Check if it's a duplicate key violation
-        if (exception.getCause() instanceof ConstraintViolationException) {
-            ConstraintViolationException cve = (ConstraintViolationException) exception.getCause();
-            String constraintName = cve.getConstraintName();
-
-            if (constraintName != null && constraintName.contains("categories")) {
-                message = "Category with this name already exists";
-            } else if (constraintName != null && constraintName.contains("products")) {
-                message = "Product with this name already exists";
-            }
-        }
-
-        ApiResponse<Object> response = ApiResponse.error(message);
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }

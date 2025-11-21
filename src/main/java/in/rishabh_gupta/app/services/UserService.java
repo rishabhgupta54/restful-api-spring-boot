@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 
 public interface UserService {
     String NOT_FOUND_MESSAGE = "User not found";
+    String DUPLICATE_EMAIL_MESSAGE = "Email already taken";
 
     Page<UserResponse> index(String keyword, int pageNumber, int pageSize, UserSortFields sortBy, SortDirection sortDir);
 
