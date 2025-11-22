@@ -1,5 +1,6 @@
 package in.rishabh_gupta.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,10 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -34,4 +39,7 @@ public class Category {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @ManyToMany(mappedBy = "categories")
+    private List<Blog> blogs = new ArrayList<>();
 }
