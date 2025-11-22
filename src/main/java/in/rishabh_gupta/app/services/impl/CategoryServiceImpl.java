@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
         Category category = this.categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
         Category checkExistingCategory = this.categoryRepository.findByName(categoryRequest.getName());
-        if (category.getId() != checkExistingCategory.getId()) {
+        if (checkExistingCategory != null && !checkExistingCategory.getId().equals(category.getId())) {
             throw new DuplicateEmailException(DUPLICATE_NAME_MESSAGE);
         }
         category.setName(categoryRequest.getName());

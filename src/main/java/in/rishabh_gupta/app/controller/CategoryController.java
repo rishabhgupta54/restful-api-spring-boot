@@ -49,7 +49,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "To delete the single category details")
-    @PatchMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(this.categoryService.delete(id)));
     }

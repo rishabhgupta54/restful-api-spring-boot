@@ -67,12 +67,12 @@ public class UserServiceImpl implements UserService {
     public UserResponse update(Long id, UserRequest userRequest) {
         AppUser user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
         AppUser checkExistingUser = this.userRepository.findByEmail(userRequest.getEmail());
-        if (user.getId() != checkExistingUser.getId()) {
+        if (checkExistingUser != null && !checkExistingUser.getId().equals(user.getId())) {
             throw new DuplicateEmailException(DUPLICATE_EMAIL_MESSAGE);
         }
 
-        if (userRequest.getPassword() != null && userRequest.getPassword().trim().isEmpty() == false) {
-            user.setPassword(this.passwordEncoder.encode(userRequest.getPassword()));
+        if (userRequest.getPassword() != null && !userRequest.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         }
 
         user.setFirstName(userRequest.getFirstName());

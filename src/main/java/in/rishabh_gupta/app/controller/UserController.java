@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @Operation(summary = "To delete the single user details")
-    @PatchMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(this.userService.delete(id)));
     }
